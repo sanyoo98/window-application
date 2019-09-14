@@ -1,0 +1,31 @@
+******CREATE TABLE STATEMENT*****
+
+create table products
+(
+	pid varchar(10) primary key,pname varchar(20) NOT NULL,price char (4) NOT NULL 
+)
+______________________________________________________________________________________________
+******ALTER TABLE(ADD) STATEMENT*****
+
+alter table products add instock char(4)
+______________________________________________________________________________________________
+******ALTER TABLE(DROP) STATEMENT*****
+
+alter table products drop column instock
+______________________________________________________________________________________________
+******PRIVATE TEMPORARY TABLES STATEMENT*****
+
+create table #tempprod
+(
+	pid char(4),pname char (10)
+)
+
+______________________________________________________________________________________________
+******GLOBAL TEMPORARY TABLES STATEMENT*****
+create table ##tempprod
+(
+	pid char(4),pname char (10)
+)
+______________________________________________________________________________________________
+
+

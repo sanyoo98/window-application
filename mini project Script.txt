@@ -1,0 +1,113 @@
+create database BankingSystem
+
+use BankingSystem
+create table Login
+(
+	userid char(8) NOT NULL,
+	password char(16) NOT NULL,
+)
+insert Login values('Admin123','Admin@123');
+insert Login values('Sanyoo','Sanyoo@123');
+
+create table Customer
+(
+	custId int identity constraint custpk primary key,
+	custName char(25) NOT NULL,
+	custAdd char(50) NOT NULL,
+	contact_no char(10),
+	username char(8)NOT NULL,
+	custPass char(16)NOT NULL,
+	Acc_type char(8) NOT NULL,
+)
+alter table Customer add constraint pkcust primary key (CustId)
+
+alter table Customer add constraint custpk primary key(custId);
+
+create table Employee
+(
+	empid int identity NOT NULL,
+	empname char(20)NOT NULL,
+	loc char(10) NOT NULL,
+	contact_no char(10) NOT NULL,
+	dept char(20)NOT NULL,
+	branch char(15) NOT NULL
+)
+
+
+If NOT EXISTS (SELECT *
+               FROM Login
+               WHERE userid = 'Admin123'
+                 AND hasdbaccess=1)
+   EXEC sp_adduser 'Admin123'
+GO
+
+create table Account
+(
+	custId int identity constraint custfk foreign key (custId) references Customer (custId),
+	Acc_no char(15) NOT NULL,
+	Acc_type char(8),
+	Balance char(10),
+)
+
+create procedure bankvalue 
+(  
+@custid INTEGER,  
+@custname VARCHAR(20),  
+@Address VARCHAR(30),  
+@contact_no CHAR(10),    
+@Acc_type char(8),
+@userid char(10),
+@password char(15),
+@StatementType nvarchar(20) = ''  
+)  
+AS  
+BEGIN  
+IF @StatementType = 'Insert'  
+BEGIN  
+insert into customer(custid,custname,Address,Acc_type,userid,Password) 
+values(@custid,@custname,@Address,@contact_no,@Acc_type,@userid,@Password)  
+END 
+end 
+
+
+alter procedure bankvalue 
+(   
+@custname VARCHAR(20),  
+@Address VARCHAR(30),  
+@contact_no CHAR(10),  
+@email VARCHAR(15),  
+@Acc_type char(8),
+@userid char(10),
+@password char(15),
+@StatementType nvarchar(20) = ''  
+)  
+AS  
+BEGIN  
+IF @StatementType = 'Insert'  
+BEGIN  
+insert into Customer(custname,Address,contact_no,email,Acc_type,userid,Password) 
+values(@custname,@Address,@contact_no,@email,@Acc_type,@userid,@Password)  
+END 
+end 
+
+create procedure bankvalue1
+(  
+@custname VARCHAR(20),  
+@Address VARCHAR(30),  
+@contact_no CHAR(10),  
+@Acc_type char(16),  
+@userid char(10),
+@password char(15),
+@StatementType nvarchar(20) = ''  
+)  
+AS  
+BEGIN  
+IF @StatementType = 'Insert'  
+BEGIN  
+insert into customer(custname,Address,contact_no,Acc_type,userid,Password) 
+values(@custname,@Address,@contact_no,@Acc_type,@userid,@Password)  
+END 
+end
+
+select c.Acc_type from Customer c left outer join Account a  on c.custId=a.custId 
+
